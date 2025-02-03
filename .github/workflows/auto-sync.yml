@@ -1,0 +1,25 @@
+name: Auto Sync Fork
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Runs every hour
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "Supriya"
+          git config --global user.email "supriyasrivastava2004@gmail.com"
+
+      - name: Sync with Upstream
+        run: |
+          git remote add upstream https://github.com/AliceWonderland/hacktoberfest.git
+          git fetch upstream
+          git merge upstream/main --no-edit
+          git push origin main
